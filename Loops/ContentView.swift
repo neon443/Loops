@@ -13,6 +13,8 @@ struct ContentView: View {
 	@State var sound: Sound = .clap
 	@State var selectedSound: Sound = .clap
 	
+	@State var easter: Bool = false
+	
 	var body: some View {
 		VStack {
 			HStack {
@@ -23,6 +25,11 @@ struct ContentView: View {
 						.resizable().scaledToFit()
 				}
 				.frame(width: 30, height: 30)
+				Spacer()
+				Button("i") { easter.toggle() }
+					.sheet(isPresented: $easter) {
+						Image("easter")
+					}
 			}
 			
 			HStack {
