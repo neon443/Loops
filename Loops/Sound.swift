@@ -40,7 +40,7 @@ enum Sound: CustomStringConvertible, CaseIterable {
 		case .snare:
 			Image("snare")
 		case .silence:
-			Image(systemName: "circle.slash.fill")
+			Image(uiImage: UIImage())
 		}
 	}
 }
