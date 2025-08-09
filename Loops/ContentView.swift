@@ -11,45 +11,42 @@ struct ContentView: View {
 	@ObservedObject var audioEngine: AudioEngine = AudioEngine()
 	
 	@State var sound: Sound = .clap
-	@State var soundBar: [Sound] = Array(repeating: .silence, count: 16)
-	@State var playing: Bool = false
 	
 	var body: some View {
-		VStack {
-			Picker("Sound", selection: $sound) {
-				ForEach(Sound.allCases, id: \.self) { soundType in
-					Text(soundType.rawValue).tag(soundType)
-				}
-			}
-			Button("Go") {
-				audioEngine.play(sound: sound)
-			}
-			
-			Button("Play/Pause") {
-				playing.toggle()
-				
+		VStack {			
+			Button("", systemImage: audioEngine.timer == nil ? "play.fill" : "pause.fill") {
+				audioEngine.startStop()
 			}
 			
 			HStack {
-				ForEach(0..<16, id: \.self) { i in
+				ForEach(0...7, id: \.self) { i in
 					Menu() {
 						ForEach(Sound.allCases, id: \.self) { soundType in
-							Text(soundType.rawValue).tag(soundType)
+							Button(soundType.description) {
+								audioEngine.sequence[i] = soundType
+							}
 						}
 					} label: {
 						ZStack {
 							RoundedRectangle(cornerRadius: 5)
-							switch soundBar[i] {
+								.foregroundStyle(.gray)
+								.opacity(audioEngine.step == i+1 ? 0.8 : 1)
+							switch audioEngine.sequence[i] {
 							case .clap:
 								Image(systemName: "hands.clap.fill")
+									.resizable().scaledToFit()
 							case .drum:
 								Image("drum")
+									.resizable().scaledToFit()
 							case .hihat:
 								Image("hihat")
+									.resizable().scaledToFit()
 							case .snare:
 								Image("snare")
+									.resizable().scaledToFit()
 							case .silence:
 								Image(systemName: "circle.slash.fill")
+									.resizable().scaledToFit()
 							}
 						}
 					}

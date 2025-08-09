@@ -11,9 +11,9 @@ import AVFoundation
 class AudioEngine: ObservableObject {
 	var hihat: AVAudioPlayer?
 	var timer: Timer?
-	var bpm = 120
-	var step = 0
-	var sequence: [Sound] = []
+	 var bpm = 120
+	@Published var step = 0
+	@Published var sequence: [Sound] = Array(repeating: .silence, count: 8)
 	
 	init() {}
 	
@@ -50,5 +50,39 @@ class AudioEngine: ObservableObject {
 			play(sound: sound)
 			
 		}
+	}
+	
+	func startStop() {
+		if timer == nil {
+			startLoop()
+		} else {
+			stopLoop()
+		}
+	}
+	
+	func startLoop() {
+		stopLoop()
+		step = 0
+		
+//		let interval = TimeInterval(60 / bpm / 4)
+		timer = Timer(timeInterval: 0.25, repeats: true) { [weak self] _ in
+			guard let self else { return }
+			
+			if step < self.sequence.count {
+				play(sound: sequence[step])
+				self.step += 1
+				if step >= sequence.count {
+					step = 0
+				}
+			}
+		}
+		
+		RunLoop.main.add(timer!, forMode: .common)
+	}
+	
+	func stopLoop() {
+		timer?.invalidate()
+		timer = nil
+		step = 0
 	}
 }

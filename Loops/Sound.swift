@@ -7,10 +7,25 @@
 
 import Foundation
 
-enum Sound: String, CaseIterable {
-	case drum = "drum"
-	case snare = "snare"
-	case hihat = "hihat"
-	case clap = "clap"
-	case silence = "none"
+enum Sound: CustomStringConvertible, CaseIterable {
+	case drum
+	case snare
+	case hihat
+	case clap
+	case silence
+	
+	var description: String {
+		switch self {
+		case .drum:
+			"drum"
+		case .snare:
+			"snare"
+		case .hihat:
+			"hihat"
+		case .clap:
+			"clap"
+		case .silence:
+			"silence"
+		}
+	}
 }
