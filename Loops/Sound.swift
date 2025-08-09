@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import SwiftUI
 enum Sound: CustomStringConvertible, CaseIterable {
 	case drum
 	case snare
@@ -26,6 +26,21 @@ enum Sound: CustomStringConvertible, CaseIterable {
 			"clap"
 		case .silence:
 			"silence"
+		}
+	}
+	
+	var image: Image {
+		switch self {
+		case .clap:
+			Image(systemName: "hands.clap.fill")
+		case .drum:
+			Image("drum")
+		case .hihat:
+			Image("hihat")
+		case .snare:
+			Image("snare")
+		case .silence:
+			Image(systemName: "circle.slash.fill")
 		}
 	}
 }
